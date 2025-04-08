@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Data Results</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'icons/favicon.png' %}">
+    <link rel="stylesheet" href="{% static 'stocks/stock_result.css' %}">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1><span class="accent">Stock</span> Data Analysis</h1>
+            <p>Market insights for {{ stock_name }}</p>
+        </div>
+    </header>
+    <div class="container">
+
+        {% if stock_columns %}
+        <section class="data-section">
+            <h3>Stock Data for {{ stock_name }}</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            {% for column in stock_columns %}
+                                <th>{{ column }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for date, row in stock_data %}
+                            <tr>
+                                <td>{{ date }}</td>
+                                {% for cell in row %}
+                                    <td>{{ cell }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="actions">
+                <a href="{% url 'download_csv' %}" class="download-button">
+                    <span class="button-content">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        Download CSV
+                    </span>
+                </a>
+            </div>
+        </section>
+
+        {% if correlation %}
+        <section class="analysis-section">
+            <h3>Correlation Matrix</h3>
+            <div class="table-wrapper">
+                {{ correlation|safe }}
+            </div>
+            
+            <div class="actions">
+                <a href="{% url 'download_correlation' %}" class="download-button">
+                    <span class="button-content">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        Download Correlation CSV
+                    </span>
+                </a>
+            </div>
+        </section>
+
+        <section class="correlation-section">
+            <h2>Correlation Heatmap</h2>
+            <div class="correlation-image-container">
+                <img src="{{ correlation_image }}" alt="Correlation Heatmap" class="correlation-image">
+            </div>
+        </section>
+
+        <section class="analysis-section">
+            <h3>Market Analysis</h3>
+            <div class="analysis-content">
+                {{ stock_analysis|linebreaks }}
+            </div>
+        </section>
+        {% endif %}
+        {% else %}
+        <div class="empty-state">
+            <p>No data available.</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Data Results</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'icons/favicon-crypto.png' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'crypto/crypto_results.css' %}">
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1><span class="accent">Crypto</span> Data Analysis</h1>
+            <p>Advanced insights for informed investment decisions</p>
+        </div>
+    </div>
+
+    <div class="container">
+        {% if stock_columns %}
+            <div class="data-section">
+                <h2>Crypto Data for {{ stock_name }}</h2>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th> 
+                                {% for column in stock_columns %}
+                                    <th>{{ column }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for date, row in stock_data %}
+                                <tr>
+                                    <td class="date-cell">{{ date }}</td> 
+                                    {% for cell in row %}
+                                        <td>{{ cell }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>    
+                </div>
+
+                <div class="button-container">
+                    <a href="{% url 'crypto_download_csv' %}" class="download-button">
+                        <svg class="button-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                        Download Crypto Data CSV
+                    </a>
+                </div>
+            </div>
+
+            {% if correlation %}
+                <div class="correlation-section">
+                    <h2>Correlation Analysis</h2>
+                    <div class="correlation-grid">
+                        <div class="correlation-table-container">
+                            <h3>Correlation Matrix</h3>
+                            <div class="table-wrapper">
+                                {{ correlation|safe }}
+                            </div>
+                            <div class="button-container">
+                                <a href="{% url 'crypto_download_correlation' %}" class="download-button">
+                                    <svg class="button-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                    </svg>
+                                    Download Correlation CSV
+                                </a>
+                            </div>
+                        </div>
+                        <div class="correlation-image-container">
+                            <h3>Correlation Heatmap</h3>
+                            <div class="image-wrapper">
+                                <img src="{{ correlation_image }}" alt="Correlation Heatmap" class="correlation-image">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="analysis-section">
+                        <h2>Market Analysis</h2>
+                        <div class="analysis-content">
+                            {{ stock_analysis|linebreaks }}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="no-data">
+                <p>No data available.</p>
+            </div>
+        {% endif %}
+    </div>
+
+
+</body>
+</html>

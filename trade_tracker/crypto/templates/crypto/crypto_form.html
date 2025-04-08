@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{% static 'icons/favicon-crypto.png' %}">
+    <link rel="stylesheet" href="{% static 'crypto/cryptos_form.css' %}">
+    <title>Crypto Data Form</title>
+</head>
+
+<body>
+    <div class="home-tag">
+        <a href="{% url 'crypto_home' %}">
+        <button class="button">
+            <div class="text">
+                <span>BACK TO</span>
+            </div>
+            <div class="clone">
+                <span>HOME</span>
+            </div>
+            <svg class="arrow" stroke-width="2" stroke="currentColor" viewBox="0 0 24 14" fill="none" class="h-6 w-6"
+                xmlns="http://www.w3.org/2000/svg" width="20px">
+                <path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linejoin="round" stroke-linecap="round"></path>
+            </svg>
+        </button>
+        </a>
+    </div>
+
+    <div class="container">
+        <div class="heading">
+            <h1>Crypto Data</h1>
+        </div>
+        <div class="blur-effect"></div>
+        
+            <form method="POST" action="{% url 'crypto_process_form' %}">
+                {% csrf_token %}
+                <div class="form">
+                <div class="search">
+                    <label for="Search"><img src="{% static '/icons/search_icon.svg' %}" alt=""></label>
+                    <input type="text" id="stock_name" name="stock_name" required placeholder="Crypto Code"
+                        oninput="this.value = this.value.toUpperCase();">
+                </div>
+                <div class="date">
+                    <div>
+                        <label for="from_date">From Date:</label>
+                        <input type="date" id="from_date" name="from_date" required>
+                    </div>
+                    <div>
+                        <label for="to_date">To Date:</label>
+                        <input type="date" id="to_date" name="to_date" required>
+                    </div>
+                </div>
+
+                <button class="cssbuttons-io-button"> SUBMIT
+                    <div class="icon">
+                        <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
+                                fill="currentColor"></path>
+                        </svg>
+                    </div>
+                </button>
+            </form>
+            <br>
+        </div>
+    </div>
+</body>
+
+</html>
